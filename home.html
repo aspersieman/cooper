@@ -113,7 +113,11 @@
                 display: flex;
                 flex-direction: column;
             }
-            
+
+            .bookmark-details-link {
+                display: flex;
+            }
+
             .bookmark-title {
                 font-size: 0.9rem;
                 margin-left: 1.5rem;
@@ -311,7 +315,7 @@
                 update(item) {
                     if (this.validate(item)) {
                         let allItems = this.allRaw();
-                        const index = allItems.map((i) => i.id).indexOf(i.id)
+                        const index = allItems.map((i) => i.id).indexOf(item.id)
                         allItems[index] = item;
                         localStorage.setItem(this.name, JSON.stringify(allItems));
                     }
@@ -408,6 +412,7 @@
                 listenerEdit(el) {
                     const editButton = el.querySelector(".edit");
                     const bookmarkLink = el.querySelector("a");
+                    const bookmarkTitle = el.querySelector(".bookmark-title");
 
                     editButton.addEventListener(
                         "click", () => {
@@ -416,12 +421,14 @@
                             const newTitle = prompt("Edit the Title:",
                                 bookmark.title);
                             bookmark.title = newTitle;
-                            updateBookmark(bookmark);
-                            if (href && isValidURL(href)) {
+                            const bm = new Bookmark(bookmark.id, bookmark.url, bookmark.title);
+
+                            if (href && bm.isValidURL(href)) {
+                                this.store.update(bookmark);
                                 bookmarkLink.setAttribute("href", href);
                                 bookmarkLink.innerHTML = href;
-                            }
-                            else if (href) {
+                                bookmarkTitle.innerHTML = newTitle;
+                            } else if (href) {
                                 alert(
                                     "Please enter a valid URL (http:// or https://)."
                                 );
@@ -448,12 +455,14 @@
                         bookmarkElement.innerHTML = 
                         `
                         <div class="bookmark-details">
-                            <a class="bookmark-link" href="${bookmark.url}" target="_blank">
+                            <span class="bookmark-details-link">
                                 <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.213 9.787a3.391 3.391 0 0 0-4.795 0l-3.425 3.426a3.39 3.39 0 0 0 4.795 4.794l.321-.304m-.321-4.49a3.39 3.39 0 0 0 4.795 0l3.424-3.426a3.39 3.39 0 0 0-4.794-4.795l-1.028.961"/>
                                 </svg>
-                                ${bookmark.url}
-                            </a>
+                                <a class="bookmark-link" href="${bookmark.url}" target="_blank">
+                                    ${bookmark.url}
+                                </a>
+                            </span>
                             <div class="bookmark-title">${bookmark.title}</div>
                         </div>
                         <div class="buttons"> 
