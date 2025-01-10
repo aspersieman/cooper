@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Bookmarks</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f4f4f4;
+            }
+
+            header {
+                width: 100%;
+                background-color: #333;
+                color: #fff;
+                text-align: center;
+                padding: 10px;
+            }
+
+            main {
+                max-width: 600px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+
+            .main-actions {
+                background-color: #c8c8c8;
+                padding: 1rem;
+                border-radius: 2px;
+                margin-bottom: 1rem;
+            }
+
+            .main-action-button {
+                display: flex;
+                align-items: center;
+                border-radius: 5px;
+                padding: 0.5rem;
+            }
+
+            .bookmark-form {
+                display: flex;
+                margin-bottom: 10px;
+            }
+
+            input[type="url"] {
+                flex: 1;
+                padding: 10px;
+            }
+
+            button#addBookmark {
+                background-color: #007bff;
+                color: #fff;
+                border: none;
+                cursor: pointer;
+                font-weight: 600;
+                margin-left: 6px;
+            }
+
+            button#addBookmark:hover {
+                background-color: #160af3;
+            }
+
+            button#deleteAll {
+                background-color: #ff6347;
+                color: #fff;
+                border: none;
+                padding: 10px 20px;
+                cursor: pointer;
+                margin-left: 10px;
+                font-weight: 600;
+            }
+
+            button#deleteAll:hover {
+                background-color: #f80404;
+            }
+
+            .bookmark-item {
+                background-color: #f5f5f5;
+                padding: 10px;
+                border: 2px solid #1d22b3;
+                border-radius: 5px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 10px;
+                background-color: #e6f2f5;
+            }
+
+            .bookmark-item a {
+                text-decoration: none;
+                color: #0d0d0d;
+            }
+
+            .bookmark-item a:hover {
+                text-decoration: underline;
+            }
+
+            .bookmark-details {
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .bookmark-title {
+                font-size: 0.9rem;
+                margin-left: 1.5rem;
+            }
+
+            .icon-button {
+                display: flex;
+                margin: 0.3rem;
+                border-radius: 5px;
+                padding: 0.3rem;
+            }
+
+            .delete {
+                background-color: #ff6347;
+                color: #fff;
+                border: none;
+                font-size: medium;
+                cursor: pointer;
+            }
+
+            .delete:hover {
+                background-color: #f80404;
+            }
+
+            .edit {
+                background-color: #6947ff;
+                color: #fff;
+                border: none;
+                font-size: medium;
+                cursor: pointer;
+            }
+
+            .edit:hover {
+                background-color: #4b0da3;
+            }
+
+            ul {
+                list-style: none;
+                padding: 0;
+            }
+
+            li {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 10px;
+            }
+
+            .bookmark-link {
+                font-weight: bold;
+                display: flex;
+                align-items: center;
+            }
+
+            a {
+                text-decoration: none;
+                color: #333;
+            }
+
+            a:hover {
+                text-decoration: underline;
+                color: rgb(40, 130, 189);
+            }
+
+            @media (max-width: 768px) {
+                main {
+                    padding: 10px;
+                }
+
+                .bookmark-form {
+                    flex-direction: column;
+                }
+
+                input[type="url"],
+                button#addBookmark,
+                button#deleteAll {
+                    margin-left: 0;
+                    margin-bottom: 10px;
+                }
+            }
+
+            @media (max-width: 345px) {
+                main {
+                    padding: 10px;
+                }
+
+                .bookmark-form {
+                    flex-direction: column;
+                }
+
+                input[type="url"],
+                button#addBookmark,
+                button#deleteAll {
+                    margin-left: 0;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>My Bookmarks</h1>
+        </header>
+        <main>
+            <section class="main-actions">
+                <button class="main-action-button" id="deleteAll">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
+                    </svg>
+                    Delete All
+                </button>
+            </section>
+            <section class="bookmark-form">
+                <input type="url" 
+                       name="url" 
+                       id="urlInput" 
+                       placeholder="Enter URL" 
+                       pattern="https://.*" 
+                       size="50" 
+                       required>
+                <button class="main-action-button" id="addBookmark">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M7.833 2c-.507 0-.98.216-1.318.576A1.92 1.92 0 0 0 6 3.89V21a1 1 0 0 0 1.625.78L12 18.28l4.375 3.5A1 1 0 0 0 18 21V3.889c0-.481-.178-.954-.515-1.313A1.808 1.808 0 0 0 16.167 2H7.833Z"/>
+                    </svg>
+                    Add Bookmark
+                </button>
+            </section>
+            <section class="bookmarks">
+                <ul id="bookmarkList">
+                </ul>
+            </section>
+        </main>
+        <script>
+            const urlInput = 
+                document.getElementById("urlInput");
+            const addBookmarkButton =
+                document.getElementById("addBookmark");
+            const deleteAllButton = 
+                document.getElementById("deleteAll");
+            const bookmarkList = 
+                document.getElementById("bookmarkList");
+
+            // Function to validate URLs
+            function isValidURL(url) {
+                const pattern = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
+                return pattern.test(url);
+            }
+
+            async function getTitle(url) {
+                const res = await fetch(url);
+                  // .then(function(res) {
+                  //   var body = res.text();
+                  //   var title = body.split('<title>')[1].split('</title>')[0]
+                  // })
+                  // .catch();
+                const body = res.text();
+                return body.split('<title>')[1].split('</title>')[0];
+            }
+
+            function getCleanUrl(url) {
+                return url.replace(/[^A-Za-z0-9]/g, '')
+            }
+
+            const saveBookmark = (bookmark) => {
+                const cleanUrl = getCleanUrl(bookmark.url);
+                bookmark.id = cleanUrl;
+                bookmarks.push(bookmark);
+                localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
+            }
+
+            const updateBookmark = (bookmark) => {
+                const index = bookmarks.map((bookmark) => bookmark.id).indexOf(bookmark.id)
+                bookmarks[index] = bookmark;
+                localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
+            }
+
+            const getBookmarkByUrl = (url) => {
+                const cleanUrl = getCleanUrl(url);
+                return bookmarks.find((bookmark) => {
+                    return bookmark.id == cleanUrl;
+                });
+            }
+
+            // Event listener for editing bookmarks
+            function addEditBookmarkListener(
+                bookmarkItem) {
+                const editButton = 
+                    bookmarkItem.querySelector(".edit");
+                const bookmarkLink = 
+                    bookmarkItem.querySelector("a");
+
+                editButton.addEventListener(
+                    "click", () => {
+                        const href = bookmarkLink.getAttribute("href");
+                        const bookmark = getBookmarkByUrl(href);
+                        console.log("editButton bookmark: ", bookmark)
+                        const newTitle = prompt("Edit the Title:",
+                            bookmark.title);
+                        bookmark.title = newTitle;
+                        updateBookmark(bookmark);
+                        if (href && isValidURL(href)) {
+                            bookmarkLink.setAttribute("href", href);
+                            bookmarkLink.innerHTML = href;
+                        }
+                        else if (href) {
+                            alert(
+                                "Please enter a valid URL (http:// or https://)."
+                            );
+                        }
+                    });
+            }
+
+            // Event listener for deleting a bookmark
+            function addDeleteBookmarkListener(
+                bookmarkItem) {
+                const deleteButton = 
+                    bookmarkItem.querySelector(".delete");
+                deleteButton.addEventListener("click", () => { bookmarkItem.remove(); });
+            }
+
+            function getAllBookmarks() {
+                const result = JSON.parse(localStorage.getItem('bookmarks'));
+                bookmarks = result ?? [];
+            }
+
+            function addBookmark(bookmark) {
+                console.log("addBookmark:", bookmark);
+                if (isValidURL(bookmark.url)) {
+                    const bookmarkItem = document.createElement("li");
+                    bookmarkItem.classList.add("bookmark-item");
+                    bookmarkItem.innerHTML = 
+                    `
+                    <div class="bookmark-details">
+                        <a class="bookmark-link" href="${bookmark.url}" target="_blank">
+                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.213 9.787a3.391 3.391 0 0 0-4.795 0l-3.425 3.426a3.39 3.39 0 0 0 4.795 4.794l.321-.304m-.321-4.49a3.39 3.39 0 0 0 4.795 0l3.424-3.426a3.39 3.39 0 0 0-4.794-4.795l-1.028.961"/>
+                            </svg>
+                            ${bookmark.url}
+                        </a>
+                        <div class="bookmark-title">${bookmark.title}</div>
+                    </div>
+                     <div class="buttons"> 
+                         <button class="edit icon-button">
+                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
+                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
+                            </svg>
+                         </button>
+                         <button class="delete icon-button">
+                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
+                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
+                            </svg>
+                         </button>
+                     </div>`;
+                    bookmarkList.appendChild(bookmarkItem);
+                    urlInput.value = "";
+
+                    addEditBookmarkListener(bookmarkItem);
+                    addDeleteBookmarkListener(bookmarkItem);
+                }
+                else {
+                    alert(
+                        "Please enter a valid URL (http:// or https://)."
+                    );
+                }
+            }
+
+            function listAllBookmarks() {
+                removeAllBookmarks();
+                getAllBookmarks();
+                bookmarks.forEach((bookmark) => {
+                    addBookmark(bookmark);
+                });
+            }
+
+            function removeAllBookmarks() {
+                while (bookmarkList.firstChild) {
+                    bookmarkList.removeChild(bookmarkList.firstChild)
+                }
+            }
+
+            window.onload = () => {
+                var bookmarks = [];
+                listAllBookmarks();
+
+                addBookmarkButton.addEventListener(
+                    "click", () => {
+                        const url = urlInput.value.trim();
+                        const bookmark = { url, title: url };
+                        addBookmark(bookmark);
+                        saveBookmark(bookmark);
+                    });
+
+                deleteAllButton.addEventListener(
+                    "click", () => {
+                        removeAllBookmarks()
+                    });
+                console.log(bookmarks);
+            }
+        </script>
+    </body>
+</html>
