@@ -1,6 +1,8 @@
 # cooper
 Single file, zero dependency home page for your browser
 
+![Screenshot](Screenshot.png)
+
 ## Use case
 
  1. You want to store some bookmarks locally on a particular browser and, for whatever reason, don't want to use your browser's bookmarks feature
