@@ -116,7 +116,6 @@
             .bookmark-item a {
                 text-decoration: none;
                 color: #0d0d0d;
-
             }
 
             .bookmark-item a:hover {
@@ -175,14 +174,21 @@
 
             li {
                 display: flex;
+                align-items: center;
                 justify-content: space-between;
                 margin-bottom: 10px;
             }
 
             .bookmark-link {
                 font-weight: bold;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+                max-width: 20rem;
+            }
+
+            .buttons {
                 display: flex;
-                align-items: center;
             }
 
             a {
@@ -196,7 +202,7 @@
             }
 
             .clock {
-                position: absolute;
+                position: fixed;
                 bottom: 0;
                 right: 0;
                 font-size: 0.8rem;
