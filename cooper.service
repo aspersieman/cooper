@@ -1,0 +1,14 @@
+[Unit]
+Description=Cooper
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=nicol
+ExecStart=/usr/local/bin/servomatic -p 8123 -d /home/nicol/src/personal/cooper/
+
+[Install]
+WantedBy=multi-user.target
